@@ -15,6 +15,7 @@ contract Optimist {
     Data[] public commitments;
 
     event DataCommitted(address indexed sender, uint256 index, bytes input);
+    event DataChallenged(address indexed challenger, uint256 index);
 
     constructor(uint _stake, bytes4 _proofFunction, bytes4 _submissionFunction) public {
         stake = _stake;
@@ -44,6 +45,7 @@ contract Optimist {
         delete commitments[id];
 
         msg.sender.transfer(stake);
+        emit DataChallenged(msg.sender, id);
     }
 
 }
