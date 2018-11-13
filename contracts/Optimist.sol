@@ -9,7 +9,7 @@ contract Optimist {
         address sender;
     }
 
-    constructor(uint _stake) {
+    constructor(uint _stake, bytes4 _proofFunction, bytes4 _submissionFunction) {
         stake = _stake;
     }
 
