@@ -13,8 +13,8 @@ contract Optimist {
         stake = _stake;
     }
 
-    function commit(bytes input) external {
-
+    function commit(bytes input) external payable {
+        require(msg.value == stake, "incorrect stake amount sent.");
     }
 
     function challenge() external {

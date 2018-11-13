@@ -16,12 +16,12 @@ contract Optimist {
         slashPeriod = _slashPeriod;
     }
 
-    function commit(bytes input) external {
-
+    function commit(bytes input) external payable {
+        require(msg.value == stake, "incorrect stake amount sent.");
     }
 
     function submit() external {
-        
+
     }
 
     function challenge() external {
