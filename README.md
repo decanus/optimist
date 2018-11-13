@@ -1,2 +1,3 @@
-# optimist
-generic optimistic smart contract
+# Optimist
+
+Generic optimistic smart contract.
