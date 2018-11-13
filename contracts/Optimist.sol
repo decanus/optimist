@@ -18,7 +18,7 @@ contract Optimist {
     }
 
     function challenge() external {
-        
+
     }
 
 }
