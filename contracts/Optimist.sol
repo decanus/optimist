@@ -12,6 +12,10 @@ contract Optimist {
         address sender;
     }
 
+    Data[] public commitments;
+
+    event DataCommitted(address indexed sender, uint256 index, bytes input);
+
     constructor(uint _stake, bytes4 _proofFunction, bytes4 _submissionFunction) public {
         stake = _stake;
         proofFunction = _proofFunction;
@@ -21,11 +25,23 @@ contract Optimist {
     function commit(bytes input) external payable {
         require(msg.value == stake, "incorrect stake amount sent.");
 
-        // @todo put data into mapping of contract
+        Data data = Data({
+            input: input,
+            sender: msg.sender
+        });
+
+        commitments.push(data);
+
+        // @todo call submission function
+
+        emit DataCommitted(msg.sender, commitments.length - 1, input);
     }
 
-    function challenge() external {
+    function challenge(uint256 id) external {
+        require(commitments[id].sender != 0x0, "commitment for id does not exist");
         /// @todo call verifier function
+
+        delete commitments[id];
 
         msg.sender.transfer(stake);
     }
