@@ -84,4 +84,32 @@ contract('WaitingOptimist', function(accounts) {
         });
     });
 
+    describe('commit', async () => {
+
+        it('should fail to commit if submission was successfully challenged', async () => {
+            let data = '0x00';
+            await optimist.submit(data, {
+                value: stake,
+                from: accounts[0]
+            });
+
+            let commitment = await optimist.commitments.call(0);
+            assert.equal(commitment[0], data);
+            assert.equal(commitment[2], accounts[0]);
+
+            await optimist.challenge(0, {
+                from: accounts[1]
+            });
+
+            commitment = await optimist.commitments.call(0);
+            assert.equal(commitment[0], '0x');
+
+            try {
+                await optimist.commit(0);
+            } catch (error) {
+                return utils.ensureException(error);
+            }
+        });
+    });
+
 });
