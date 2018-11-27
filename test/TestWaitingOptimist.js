@@ -110,6 +110,22 @@ contract('WaitingOptimist', function(accounts) {
                 return utils.ensureException(error);
             }
         });
+
+        it('should allow commit if submission was not challenged', async () => {
+            let data = '0x01';
+            await optimist.submit(data, {
+                value: stake,
+                from: accounts[0]
+            });
+
+            let commitment = await optimist.commitments.call(0);
+            assert.equal(commitment[0], data);
+            assert.equal(commitment[2], accounts[0]);
+
+            utils.increaseTime(cooldown + 10);
+
+            await optimist.commit(0);
+        });
     });
 
 });
