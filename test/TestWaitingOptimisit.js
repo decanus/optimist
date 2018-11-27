@@ -12,8 +12,8 @@ contract('WaitingOptimist', function(accounts) {
     beforeEach(async function() {
         storage = await DataStorage.new();
 
-        stake = 10;
-        cooldown = 5000;
+        stake = 10**18;
+        cooldown = 50000;
 
         optimist = await Optimist.new(stake, cooldown, storage.address);
     });
@@ -42,6 +42,45 @@ contract('WaitingOptimist', function(accounts) {
             } catch (error) {
                 return utils.ensureException(error);
             }
+        });
+    });
+
+    describe('challenge', async () => {
+
+        it('should fail to challenge when submission is valid', async () => {
+            await optimist.submit('0x01', {
+                value: stake,
+                from: accounts[0]
+            });
+
+            try {
+                await optimist.challenge(0, {
+                    from: accounts[1]
+                });
+            } catch (error) {
+                return utils.ensureException(error);
+            }
+        });
+
+        it('should slash when invalid submission is challenged', async () => {
+            let data = '0x00';
+            await optimist.submit(data, {
+                value: stake,
+                from: accounts[0]
+            });
+
+            let commitment = await optimist.commitments.call(0);
+            assert.equal(commitment[0], data);
+            assert.equal(commitment[2], accounts[0]);
+
+            await optimist.challenge(0, {
+                from: accounts[1]
+            });
+
+            commitment = await optimist.commitments.call(0);
+            assert.equal(commitment[0], '0x');
+
+            // @todo validate user got stake
         });
     });
 
