@@ -4,7 +4,7 @@ pragma solidity ^0.4.24;
 
 interface DataStorage {
 
-    function validate(bytes input) external returns (bool);
+    function isValid(bytes input) external returns (bool);
     function submit(bytes input) external;
 
 }

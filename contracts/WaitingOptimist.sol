@@ -18,7 +18,7 @@ contract WaitingOptimist is Optimist {
 
     Commitment[] public commitments;
 
-    event DataCommitted(address indexed committer, uint256 index);
+    event Committed(address indexed committer, uint256 index);
 
     constructor(uint256 _stake, uint256 _cooldown) public {
         stake = _stake;
@@ -44,7 +44,7 @@ contract WaitingOptimist is Optimist {
 
         require(commitment.submitted + cooldown <= now);
 
-        require(!dataStorage.verify(commitment.input));
+        require(!dataStorage.isValid(commitment.input));
 
         delete commitments[id];
         msg.sender.transfer(stake);
@@ -60,7 +60,7 @@ contract WaitingOptimist is Optimist {
 
         dataStorage.submit(commitment.input);
 
-        submitter = commitment.submitter;
+        address submitter = commitment.submitter;
         delete commitments[id];
         submitter.transfer(stake);
 
