@@ -1,6 +1,7 @@
 pragma solidity ^0.4.24;
 
 import "./Optimist.sol";
+import "./DataStorage.sol";
 
 contract WaitingOptimist is Optimist {
 
@@ -9,6 +10,8 @@ contract WaitingOptimist is Optimist {
         uint256 submitted;
         address submitter;
     }
+
+    DataStorage public dataStorage;
 
     uint256 public stake;
     uint256 public cooldown;
@@ -41,10 +44,9 @@ contract WaitingOptimist is Optimist {
 
         require(commitment.submitted + cooldown <= now);
 
-        // @todo verify
+        require(!dataStorage.verify(commitment.input));
 
         delete commitments[id];
-
         msg.sender.transfer(stake);
 
         emit Challenged(msg.sender, id);
@@ -53,14 +55,13 @@ contract WaitingOptimist is Optimist {
     function commit(uint256 id) external {
         Commitment storage commitment = commitments[id];
 
+        require(commitment.submitter != address(0x0));
         require(commitment.submitted + cooldown > now);
 
-        // @todo submit the data
+        dataStorage.submit(commitment.input);
 
         submitter = commitment.submitter;
-
         delete commitments[id];
-
         submitter.transfer(stake);
 
         emit Committed(msg.sender, id);
