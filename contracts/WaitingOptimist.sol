@@ -17,6 +17,11 @@ contract WaitingOptimist is Optimist {
 
     event DataCommitted(address indexed committer, uint256 index);
 
+    constructor(uint256 _stake, uint256 _cooldown) public {
+        stake = _stake;
+        cooldown = _cooldown;
+    }
+
     function submit(bytes input) external payable {
         require(msg.value == stake);
 
