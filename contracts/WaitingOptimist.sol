@@ -20,12 +20,17 @@ contract WaitingOptimist is Optimist {
 
     event Committed(address indexed committer, uint256 index);
 
+    /// @param _stake The required stake amount in wei.
+    /// @param _cooldown The cooldown time in seconds.
+    /// @param _storage The storage contract.
     constructor(uint256 _stake, uint256 _cooldown, DataStorage _storage) public {
         stake = _stake;
         cooldown = _cooldown;
         dataStorage = _storage;
     }
 
+    /// @dev This function submits data, starting the challenge period.
+    /// @param input The input data to submit.
     function submit(bytes input) external payable {
         require(msg.value == stake);
 
@@ -40,6 +45,8 @@ contract WaitingOptimist is Optimist {
         emit Submitted(msg.sender, (commitments.length - 1), input);
     }
 
+    /// @dev This function challenges a submission by calling the validation function.
+    /// @param id The id of the submission to challenge.
     function challenge(uint256 id) external {
         Commitment storage commitment = commitments[id];
 
@@ -53,6 +60,8 @@ contract WaitingOptimist is Optimist {
         emit Challenged(msg.sender, id);
     }
 
+    /// @dev This function finalizes a submission by adding it to the storage.
+    /// @param id The id of the submission to finalize.
     function commit(uint256 id) external {
         Commitment storage commitment = commitments[id];
 
