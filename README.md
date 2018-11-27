@@ -1,3 +1,3 @@
 # Optimist
 
-Generic optimistic smart contract.
+This repository contains generic contracts following the optimistic contract standard.
