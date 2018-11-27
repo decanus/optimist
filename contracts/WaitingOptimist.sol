@@ -20,9 +20,10 @@ contract WaitingOptimist is Optimist {
 
     event Committed(address indexed committer, uint256 index);
 
-    constructor(uint256 _stake, uint256 _cooldown) public {
+    constructor(uint256 _stake, uint256 _cooldown, DataStorage _storage) public {
         stake = _stake;
         cooldown = _cooldown;
+        dataStorage = _storage;
     }
 
     function submit(bytes input) external payable {
