@@ -22,7 +22,11 @@ contract('WaitingOptimist', function(accounts) {
 
         it('should accept submission with correct stake', async () => {
             const data = '0x01';
-            await optimist.submit(data, {value: stake, from: accounts[0]});
+
+            await optimist.submit(data, {
+                value: stake,
+                from: accounts[0]
+            });
 
             let commitment = await optimist.commitments.call(0);
             assert.equal(commitment[0], data);
@@ -31,7 +35,10 @@ contract('WaitingOptimist', function(accounts) {
 
         it('should fail when submitting with incorrect stake', async () => {
             try {
-                await optimist.submit('0x0', {value: 0, from: accounts[0]});
+                await optimist.submit('0x0', {
+                    value: 0,
+                    from: accounts[0]
+                });
             } catch (error) {
                 return utils.ensureException(error);
             }
