@@ -50,7 +50,6 @@ contract ImmediateOptimist is Optimist {
         Commitment storage commitment = commitments[id];
 
         require(commitment.submitted != 0);
-        require(commitment.submitted + cooldown >= now);
 
         require(!dataStorage.isValid(commitment.input));
 
