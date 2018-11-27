@@ -50,6 +50,7 @@ contract WaitingOptimist is Optimist {
     function challenge(uint256 id) external {
         Commitment storage commitment = commitments[id];
 
+        require(commitment.submitter != address(0x0));
         require(commitment.submitted + cooldown >= now);
 
         require(!dataStorage.isValid(commitment.input));
