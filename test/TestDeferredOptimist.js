@@ -42,6 +42,8 @@ contract('DeferredOptimist', function(accounts) {
             } catch (error) {
                 return utils.ensureException(error);
             }
+            
+            assert.fail('did not fail');
         });
     });
 
@@ -60,6 +62,8 @@ contract('DeferredOptimist', function(accounts) {
             } catch (error) {
                 return utils.ensureException(error);
             }
+            
+            assert.fail('did not fail');
         });
 
         it('should slash when invalid submission is challenged', async () => {
@@ -109,6 +113,8 @@ contract('DeferredOptimist', function(accounts) {
             } catch (error) {
                 return utils.ensureException(error);
             }
+            
+            assert.fail('did not fail');
         });
 
         it('should allow commit if submission was not challenged', async () => {
