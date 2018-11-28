@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "./Optimist.sol";
 import "./DataStorage.sol";
 
-contract WaitingOptimist is Optimist {
+contract DeferredOptimist is Optimist {
 
     struct Commitment {
         bytes input;

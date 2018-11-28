@@ -1,9 +1,9 @@
-const Optimist = artifacts.require('./WaitingOptimist.sol');
+const Optimist = artifacts.require('./DeferredOptimist.sol');
 const DataStorage = artifacts.require('./mocks/DataStorageMock.sol');
 
 const utils = require('./helpers/Utils.js');
 
-contract('WaitingOptimist', function(accounts) {
+contract('DeferredOptimist', function(accounts) {
 
     let stake, cooldown;
 
