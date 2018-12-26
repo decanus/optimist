@@ -13,6 +13,7 @@ contract ImmediateOptimist is Optimist {
     DataStorageWithRemoval public dataStorage;
 
     uint256 public stake;
+    uint256 public cooldown;
 
     Commitment[] public commitments;
 
@@ -49,7 +50,7 @@ contract ImmediateOptimist is Optimist {
     function challenge(uint256 id) external {
         Commitment storage commitment = commitments[id];
 
-        require(commitment.submitted != 0);
+        require(commitment.key != 0);
 
         require(!dataStorage.isValid(commitment.input));
 
