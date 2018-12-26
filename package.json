@@ -4,9 +4,9 @@
   "requires": true,
   "lockfileVersion": 1,
   "devDependencies": {
-    "eth-gas-reporter": "^0.1.2",
-    "solium": "^1.0.4",
-    "truffle": "^4.1.12"
+    "eth-gas-reporter": "^0.1.12",
+    "solium": "^1.1.8",
+    "truffle": "^5.0.0"
   },
   "scripts": {
     "pretest": "truffle compile",

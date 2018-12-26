@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
 import "./Optimist.sol";
 import "./DataStorageWithRemoval.sol";
@@ -29,7 +29,7 @@ contract ImmediateOptimist is Optimist {
 
     /// @dev This function submits data.
     /// @param input The input data to submit.
-    function submit(bytes input) external payable {
+    function submit(bytes calldata input) external payable {
         require(msg.value == stake);
 
         uint256 key = dataStorage.submit(input);

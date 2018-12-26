@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
 import "./Optimist.sol";
 import "./DataStorage.sol";
@@ -8,7 +8,7 @@ contract DeferredOptimist is Optimist {
     struct Commitment {
         bytes input;
         uint256 submitted;
-        address submitter;
+        address payable submitter;
     }
 
     DataStorage public dataStorage;
@@ -31,7 +31,7 @@ contract DeferredOptimist is Optimist {
 
     /// @dev This function submits data, starting the challenge period.
     /// @param input The input data to submit.
-    function submit(bytes input) external payable {
+    function submit(bytes calldata input) external payable {
         require(msg.value == stake);
 
         commitments.push(
@@ -71,7 +71,7 @@ contract DeferredOptimist is Optimist {
 
         dataStorage.submit(commitment.input);
 
-        address submitter = commitment.submitter;
+        address payable submitter = commitment.submitter;
         delete commitments[id];
         submitter.transfer(stake);
 
