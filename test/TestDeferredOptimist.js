@@ -2,6 +2,7 @@ const Optimist = artifacts.require('./DeferredOptimist.sol');
 const DataStorage = artifacts.require('./mocks/DataStorageMock.sol');
 
 const utils = require('./helpers/Utils.js');
+const BigNumber = require('bignumber.js');
 
 contract('DeferredOptimist', function(accounts) {
 
@@ -12,7 +13,7 @@ contract('DeferredOptimist', function(accounts) {
     beforeEach(async function() {
         storage = await DataStorage.new();
 
-        stake = 10**18;
+        stake = new BigNumber('1e18');
         cooldown = 50000;
 
         optimist = await Optimist.new(stake, cooldown, storage.address);
@@ -82,7 +83,7 @@ contract('DeferredOptimist', function(accounts) {
             });
 
             commitment = await optimist.commitments.call(0);
-            assert.equal(commitment[0], '0x');
+            assert.isNull(commitment[0], 'commitment should be empty (deleted)');
 
             // @todo validate user got stake
         });
@@ -106,7 +107,7 @@ contract('DeferredOptimist', function(accounts) {
             });
 
             commitment = await optimist.commitments.call(0);
-            assert.equal(commitment[0], '0x');
+            assert.isNull(commitment[0]);
 
             try {
                 await optimist.commit(0);
@@ -128,7 +129,7 @@ contract('DeferredOptimist', function(accounts) {
             assert.equal(commitment[0], data);
             assert.equal(commitment[2], accounts[0]);
 
-            utils.increaseTime(cooldown + 10);
+            await utils.increaseTime(cooldown + 10);
 
             await optimist.commit(0);
         });
