@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
 import "./Optimist.sol";
 import "./DataStorageWithRemoval.sol";
@@ -13,6 +13,7 @@ contract ImmediateOptimist is Optimist {
     DataStorageWithRemoval public dataStorage;
 
     uint256 public stake;
+    uint256 public cooldown;
 
     Commitment[] public commitments;
 
@@ -29,7 +30,7 @@ contract ImmediateOptimist is Optimist {
 
     /// @dev This function submits data.
     /// @param input The input data to submit.
-    function submit(bytes input) external payable {
+    function submit(bytes calldata input) external payable {
         require(msg.value == stake);
 
         uint256 key = dataStorage.submit(input);
@@ -49,7 +50,7 @@ contract ImmediateOptimist is Optimist {
     function challenge(uint256 id) external {
         Commitment storage commitment = commitments[id];
 
-        require(commitment.submitted != 0);
+        require(commitment.key != 0);
 
         require(!dataStorage.isValid(commitment.input));
 
